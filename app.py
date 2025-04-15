@@ -13,17 +13,14 @@ client_secret = "e40453a57417459bb88c1f9756c31e3d"
 auth_manager = SpotifyClientCredentials(client_id=client_id, client_secret=client_secret)
 sp = Spotify(auth_manager=auth_manager)
 
-# Load your dataset and scaled features
-df = pd.read_csv("SpotifyFeatures.csv")  # Replace with your cleaned dataset filename
+df = pd.read_csv("SpotifyFeatures.csv") 
 
-# If you have X_scaled saved as a file, load it. If not, scale again.
 from sklearn.preprocessing import StandardScaler
 
 features = ['danceability', 'energy', 'valence', 'tempo', 'acousticness']
 X_scaled = StandardScaler().fit_transform(df[features])
 
 
-# Function to get album cover
 def get_album_cover(track_name, artist_name):
     query = f"{track_name} {artist_name}"
     result = sp.search(q=query, type='track', limit=1)
@@ -33,7 +30,7 @@ def get_album_cover(track_name, artist_name):
         return None
 
 
-# Function to recommend songs
+
 def recommend(song_name, df, features_scaled, top_n=10):
     index = df[df['track_name'] == song_name].index[0]
     similarity = cosine_similarity([features_scaled[index]], features_scaled)[0]
@@ -44,7 +41,7 @@ def recommend(song_name, df, features_scaled, top_n=10):
     )
     return results
 
-# ---------- STYLING ----------
+
 st.markdown("""
     <style>
     [data-testid="stAppViewContainer"] {
@@ -79,21 +76,18 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# ---------- HEADER ----------
 st.markdown("<h1 style='text-align: center; color: #1DB954;'>Spotify Music Recommendation System</h1>", unsafe_allow_html=True)
 
-# ---------- SONG SELECTION ----------
 song_list = df['track_name'].dropna().unique()
 selected_song = st.selectbox("Choose a song:", song_list)
 
-# ---------- BUTTONS ----------
+
 col1, col2 = st.columns([1, 1])
 with col1:
     recommend_button = st.button("Recommend Similar Songs")
 with col2:
     reset_button = st.button("Reset")
 
-# ---------- LOGIC ----------
 if recommend_button:
     with st.spinner("Fetching recommendations..."):
         recommendations = recommend(selected_song, df, X_scaled)
@@ -108,7 +102,6 @@ if recommend_button:
 elif reset_button:
     st.experimental_rerun()
 
-# ---------- FOOTER ----------
 st.markdown(
     "<hr style='margin-top: 3rem; margin-bottom: 1rem;'>"
     "<p style='text-align: center; font-size: 14px;'>Made by Ziggy Greg | "
