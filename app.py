@@ -44,10 +44,7 @@ def recommend(song_name, df, features_scaled, top_n=10):
     )
     return results
 
-
-# Streamlit UI
-st.markdown(
-    """
+st.markdown("""
     <style>
     [data-testid="stAppViewContainer"] {
         background-image: url("https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4");
@@ -62,27 +59,6 @@ st.markdown(
     }
 
     .block-container {
-        background-color: rgba(255, 255, 255, 0.90);
-        padding: 2rem;
-        border-radius: 12px;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-st.markdown("""
-    <style>
-    .block-container {
-        background-color: rgba(0, 0, 0, 0.7);  /* Black with 70% opacity */
-        padding: 2rem;
-        border-radius: 12px;
-        color: white;
-    }
-    </style>
-""", unsafe_allow_html=True)
-st.markdown("""
-    <style>
-    .block-container {
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -93,9 +69,24 @@ st.markdown("""
         border-radius: 12px;
         color: white;
     }
+
+    @media only screen and (max-width: 600px) {
+        .block-container {
+            padding: 1rem !important;
+        }
+    }
     </style>
 """, unsafe_allow_html=True)
 
+
+
+st.markdown(
+    "<hr style='margin-top: 3rem; margin-bottom: 1rem;'>"
+    "<p style='text-align: center; font-size: 14px;'>Made by Ziggy Greg | "
+    "<a href='https://github.com/ziggy-greg' target='_blank'>GitHub</a> | "
+    "<a href='https://instagram.com/your_handle' target='_blank'>Instagram</a></p>",
+
+)
 
 st.markdown("<h1 style='text-align: center; color: #1DB954;'>Spotify Music Recommendation System</h1>", unsafe_allow_html=True)
 
