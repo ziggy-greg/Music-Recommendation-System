@@ -44,6 +44,7 @@ def recommend(song_name, df, features_scaled, top_n=10):
     )
     return results
 
+# ---------- STYLING ----------
 st.markdown("""
     <style>
     [data-testid="stAppViewContainer"] {
@@ -64,7 +65,7 @@ st.markdown("""
         justify-content: center;
         align-items: center;
         min-height: 100vh;
-        background-color: rgba(0, 0, 0, 0.7); /* Black container */
+        background-color: rgba(0, 0, 0, 0.7);
         padding: 2rem;
         border-radius: 12px;
         color: white;
@@ -78,42 +79,21 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-
-
-st.markdown(
-    "<hr style='margin-top: 3rem; margin-bottom: 1rem;'>"
-    "<p style='text-align: center; font-size: 14px;'>Made by Ziggy Greg | "
-    "<a href='https://github.com/ziggy-greg' target='_blank'>GitHub</a> | "
-    "<a href='https://instagram.com/your_handle' target='_blank'>Instagram</a></p>",
-
-)
-
+# ---------- HEADER ----------
 st.markdown("<h1 style='text-align: center; color: #1DB954;'>Spotify Music Recommendation System</h1>", unsafe_allow_html=True)
 
-song_list = df['track_name'].dropna().unique()
-selected_song = st.selectbox("Choose a song:", song_list)
-if st.button("Recommend Similar Songs"):
-    with st.spinner("Fetching recommendations..."):
-        recommendations = recommend(selected_song, df, X_scaled)
-
-    for i, row in recommendations.iterrows():
-        st.markdown(f"### {row['track_name']} by {row['artist_name']}")
-        if row['album_cover']:
-            st.image(row['album_cover'], width=200)
-        else:
-            st.write("No album cover found.")
-            # Streamlit UI
-st.markdown("<h1 style='text-align: center; color: #1DB954;'>Spotify Music Recommendation System</h1>", unsafe_allow_html=True)
-
+# ---------- SONG SELECTION ----------
 song_list = df['track_name'].dropna().unique()
 selected_song = st.selectbox("Choose a song:", song_list)
 
+# ---------- BUTTONS ----------
 col1, col2 = st.columns([1, 1])
 with col1:
     recommend_button = st.button("Recommend Similar Songs")
 with col2:
     reset_button = st.button("Reset")
 
+# ---------- LOGIC ----------
 if recommend_button:
     with st.spinner("Fetching recommendations..."):
         recommendations = recommend(selected_song, df, X_scaled)
@@ -127,3 +107,12 @@ if recommend_button:
 
 elif reset_button:
     st.experimental_rerun()
+
+# ---------- FOOTER ----------
+st.markdown(
+    "<hr style='margin-top: 3rem; margin-bottom: 1rem;'>"
+    "<p style='text-align: center; font-size: 14px;'>Made by Ziggy Greg | "
+    "<a href='https://github.com/ziggy-greg' target='_blank'>GitHub</a> | "
+    "<a href='https://instagram.com/your_handle' target='_blank'>Instagram</a></p>",
+    unsafe_allow_html=True
+)
