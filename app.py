@@ -102,3 +102,28 @@ if st.button("Recommend Similar Songs"):
             st.image(row['album_cover'], width=200)
         else:
             st.write("No album cover found.")
+            # Streamlit UI
+st.markdown("<h1 style='text-align: center; color: #1DB954;'>Spotify Music Recommendation System</h1>", unsafe_allow_html=True)
+
+song_list = df['track_name'].dropna().unique()
+selected_song = st.selectbox("Choose a song:", song_list)
+
+col1, col2 = st.columns([1, 1])
+with col1:
+    recommend_button = st.button("Recommend Similar Songs")
+with col2:
+    reset_button = st.button("Reset")
+
+if recommend_button:
+    with st.spinner("Fetching recommendations..."):
+        recommendations = recommend(selected_song, df, X_scaled)
+
+    for i, row in recommendations.iterrows():
+        st.markdown(f"### {row['track_name']} by {row['artist_name']}")
+        if row['album_cover']:
+            st.image(row['album_cover'], width=200)
+        else:
+            st.write("No album cover found.")
+
+elif reset_button:
+    st.experimental_rerun()
